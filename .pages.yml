@@ -143,3 +143,19 @@ content:
             component: cards
           - name: faq
             component: faq
+  - name: navigation
+    label: Navigation
+    type: file
+    path: data/navigation.yml
+    fields:
+      - name: items
+        label: Menu items
+        type: object
+        list: true
+        fields:
+          - name: label
+            type: string
+            required: true
+          - name: url
+            type: string
+            required: true
