@@ -1,54 +1,145 @@
-media: media
+media:
+  - name: images
+    label: Images
+    input: public/images
+    output: /images
+    extensions: [jpg, jpeg, png, webp, avif]
+    categories: [image]
+    rename: safe
+
+components:
+  seo:
+    type: object
+    label: SEO
+    fields:
+      - name: title
+        type: string
+      - name: description
+        type: text
+      - name: image
+        type: image
+        options:
+          media: images
+
+  hero:
+    type: object
+    label: Hero
+    fields:
+      - name: eyebrow
+        type: string
+      - name: heading
+        type: string
+        required: true
+      - name: text
+        type: text
+      - name: image
+        type: image
+        options:
+          media: images
+      - name: cta
+        type: object
+        fields:
+          - name: label
+            type: string
+          - name: url
+            type: string
+
+  rich_text_section:
+    type: object
+    label: Rich text
+    fields:
+      - name: body
+        type: rich-text
+        required: true
+
+  image_text:
+    type: object
+    label: Image + text
+    fields:
+      - name: heading
+        type: string
+      - name: text
+        type: rich-text
+      - name: image
+        type: image
+        options:
+          media: images
+      - name: imagePosition
+        type: select
+        options:
+          values:
+            - left
+            - right
+
+  cards:
+    type: object
+    label: Cards
+    fields:
+      - name: heading
+        type: string
+      - name: items
+        type: object
+        list: true
+        fields:
+          - name: title
+            type: string
+          - name: text
+            type: text
+          - name: image
+            type: image
+            options:
+              media: images
+
+  faq:
+    type: object
+    label: FAQ
+    fields:
+      - name: heading
+        type: string
+      - name: items
+        type: object
+        list: true
+        fields:
+          - name: question
+            type: string
+          - name: answer
+            type: rich-text
 
 content:
-  - name: docs
-    label: Docs
+  - name: pages
+    label: Pages
     type: collection
-    path: docs
+    path: content/pages
     format: yaml-frontmatter
-    exclude: [docs.json]
     filename: "{primary}.md"
-    view:
-      fields: [title, description, date]
-      primary: title
-      sort: [date, title]
-      default:
-        search: ""
-        sort: date
-        order: desc
     fields:
       - name: title
         label: Title
         type: string
         required: true
-      - name: description
-        label: Description
+
+      - name: slug
+        label: Slug
         type: string
         required: true
-      - name: icon
-        label: Icon
-        type: string
-        description: Kebab case Lucide icon name. See https://lucide.dev
-      - name: body
-        label: Body
-        type: rich-text
+        pattern: "^[a-z0-9-]+$"
 
-  - name: navigation
-    label: Navigation
-    type: file
-    path: docs/docs.json
-    format: code
-    options:
-      language: json
+      - name: seo
+        component: seo
 
-  - name: site
-    label: Site configuration
-    type: file
-    path: _data/site.json
-    format: code
-    options:
-      language: json
-
-settings:
-  content:
-    merge: true
+      - name: sections
+        label: Page sections
+        type: block
+        list: true
+        blockKey: type
+        blocks:
+          - name: hero
+            component: hero
+          - name: rich_text
+            component: rich_text_section
+          - name: image_text
+            component: image_text
+          - name: cards
+            component: cards
+          - name: faq
+            component: faq
