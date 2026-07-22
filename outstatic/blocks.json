@@ -1,0 +1,19 @@
+{
+  "blocks": [
+    {
+      "icon": "sparkles",
+      "keywords": [
+      ],
+      "name": "Test",
+      "props": [
+        {
+          "name": "a",
+          "required": true,
+          "type": "String"
+        }
+      ]
+    }
+  ],
+  "commit": "",
+  "generated": "2026-07-22T15:28:39.164Z"
+}
